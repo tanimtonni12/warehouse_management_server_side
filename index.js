@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const { get } = require('express/lib/response');
 require('dotenv').config();
@@ -19,19 +20,24 @@ async function run() {
 
         await client.connect();
         const productCollection = client.db('wareHouseManagement').collection('product');
+
         //get data
         app.get('/product', async (req, res) => {
-
-            // console.log(req.body)
-
-
             const query = {};
             const cursor = productCollection.find(query);
             const products = await cursor.toArray();
             res.send(products);
+        });
 
+        //AUTH
+        app.post('/login', async (req, res) => {
+            const user = req.body;
+            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+            res.send({ accessToken });
+            console.log(data);
 
         });
+        //search my items
         app.get('/product/my', async (req, res) => {
             const email = req.query.email;
             console.log(email);
@@ -76,18 +82,12 @@ async function run() {
 
         });
 
-
-
-
-
-
         //post data add
         app.post('/product', async (req, res) => {
             const newProduct = req.body;
             const result = await productCollection.insertOne(newProduct);
             res.send(result);
         });
-
 
         //find one
         app.get('/product/:id', async (req, res) => {
@@ -115,10 +115,6 @@ async function run() {
 
         });
 
-
-
-
-
         //delete
         app.delete('/product/:id', async (req, res) => {
             const id = req.params.id;
@@ -126,16 +122,10 @@ async function run() {
             const result = await productCollection.deleteOne(query);
             res.send(result);
 
-
         });
-
-
-
-
 
     }
     finally {
-
 
     }
 

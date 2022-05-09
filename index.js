@@ -30,7 +30,6 @@ function verifyJWT(req, res, next) {
 }
 
 
-
 //db Connection
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.m9t3t.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -56,6 +55,7 @@ async function run() {
             console.log(data);
 
         });
+
         //search my items
         app.get('/product/my', async (req, res) => {
             const email = req.query.email;

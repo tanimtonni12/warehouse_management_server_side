@@ -52,7 +52,6 @@ async function run() {
             const user = req.body;
             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
             res.send({ accessToken });
-            console.log(data);
 
         });
 

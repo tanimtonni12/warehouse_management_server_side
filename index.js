@@ -14,6 +14,7 @@ app.use(express.json());
 
 function verifyJWT(req, res, next) {
     const authHeader = req.headers.authorization;
+    console.log(authHeader, process.env.ACCESS_TOKEN_SECRET);
     if (!authHeader) {
         return res.status(401).send({ message: 'unauthorized access' });
     }
